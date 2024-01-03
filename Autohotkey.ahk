@@ -1,21 +1,55 @@
 #SingleInstance force
 #NoEnv
 
-#e::Run /usr/bin/nautilus
+#e::
+	IfWinExist, ahk_class Nautilus
+	{
+		WinActivate
+		Send, {LWin down}{Left}{LWin up}
+		return
+	} else {
+		Run, /usr/bin/nautilus
+		return
+	}
+
 #c::Run /usr/bin/gnome-calculator
++Backspace::Send, +{Home}{Del}
+!d::
+	IfWinExist, ahk_class Xournalpp
+	{
+		WinActivate
+		Send, {LWin down}{Right}{LWin up}
+		return
+	} else {
+		Run, /usr/bin/xournalpp
+		return
+	}
+
+;Double tap
+!Left::Send, {Home}
+!Right::Send, {End}
 
 ^+Enter::
-	Run, ~/Documents/AutoHotkey/Autohotkey.ahk
+Send, abc
+	Run, %A_MyDocuments%/AutoHotkey/Autohotkey.ahk
 	FileCopy, ~/Documents/AutoHotkey/Autohotkey.ahk, G:/Meu Drive/AWindowsDefault/AutoHotkeyUbuntu/AutoHotkey.ahk, 1
 	;FileCopyDir, ~/Documents/AutoHotkey/Autohotkey/Scripts , G:/Meu Drive/AWindowsDefault/AutoHotkeyUbuntu/Scripts, 1
 	return
+
++Escape::
+	Send, {BS}
+  	return
+
+^Space::
+	Send, {Enter}
+  	return
 
 ;Hotstrings
 :*:cowl::Console.WriteLine
 :*:corl::Console.ReadLine
 :*:sebg::Serial.begin(115200);
 :*:sepp::Serial.print
-:*:sepl::Serial.println
+:*:sepl::Serial.printlnd
 :*:sewr::Serial.write
 :*:sepf::Serial.printf
 :*:piop::pio device monitor -b 115200 -p COM
@@ -26,7 +60,7 @@
 	Run, https://www.autohotkey.com/docs/Tutorial.html
 	Sleep, 2250
 	Send, {WheelDown 25}
-return
+	return
 :*:piodl::pio device list
 :*:piodm::pio device monitor
 :*:i@::innoboat
